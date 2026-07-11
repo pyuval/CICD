@@ -1,3 +1,4 @@
+cat << 'EOF' > .github/workflows/continuous-integration.yml
 name: Local-to-Cloud CI
 
 on:
@@ -24,3 +25,4 @@ jobs:
 
     - name: Compile Code Build
       run: dotnet build --no-restore --configuration Release
+EOF

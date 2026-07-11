@@ -28,11 +28,9 @@ jobs:
       - name: Run Automated Unit Tests
         run: dotnet test --no-build --configuration Release
 
-      # NEW: Explicitly publish the application to a clean target folder
       - name: Publish Application
         run: dotnet publish SrcApp/SrcApp.csproj --configuration Release --output ./publish
 
-      # UPDATED: Point directly to that clean publish folder
       - name: Publish and Save Build Artifacts
         uses: actions/upload-artifact@v4
         with:

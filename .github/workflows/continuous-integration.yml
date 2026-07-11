@@ -1,39 +1,40 @@
-name: Local-to-Cloud CI
+ name: Local-to-Cloud CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   compile-and-test:
     runs-on: windows-latest
 
     steps:
-      - name: Check out source code
-        uses: actions/checkout@v4
+    - name: Check out source code
+      uses: actions/checkout@v4
 
-      - name: Set up .NET Runtime Environment
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "8.0.x"
+    - name: Set up .NET Runtime Environment
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
 
-      - name: Restore Package Dependencies
-        run: dotnet restore
+    - name: Restore Package Dependencies
+      run: dotnet restore
 
-      - name: Compile Code Build
-        run: dotnet build --no-restore --configuration Release
+    - name: Compile Code Build
+      run: dotnet build --no-restore --configuration Release
 
-      # NEW: Add the automated testing step
-      - name: Run Automated Unit Tests
-        run: dotnet test --no-build --configuration Release
-      - name: Run Automated Unit Tests
-        run: dotnet test --no-build --configuration Release
+    - name: Run Automated Unit Tests
+      run: dotnet test --no-build --configuration Release
 
-      # NEW: Continuous Delivery step to save the compiled application
-      - name: Publish and Save Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: production-ready-binary
-          path: SrcApp/bin/Release/net8.0/
+    # NEW: Explicitly publish the application to a clean target folder
+    - name: Publish Application
+      run: dotnet publish SrcApp/SrcApp.csproj --configuration Release --output ./publish
+
+    # UPDATED: Point directly to that clean publish folder
+    - name: Publish and Save Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: production-ready-binary
+        path: ./publish

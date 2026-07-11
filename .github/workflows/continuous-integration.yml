@@ -1,29 +1,26 @@
 name: Local-to-Cloud CI
 
-# 1. The Trigger: What event starts the engine?
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
-# 2. The Jobs: What isolated environments do we need?
 jobs:
   compile-and-test:
-    runs-on: windows-latest  # Matches your PC flavor
+    runs-on: windows-latest
 
-    # 3. The Steps: Sequential execution commands
     steps:
     - name: Check out source code
       uses: actions/checkout@v4
 
-     Khud name: Set up .NET Runtime Environment
+    - name: Set up .NET Runtime Environment
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
 
-     Khud name: Restore Package Dependencies
+    - name: Restore Package Dependencies
       run: dotnet restore
 
-     Khud name: Compile Code Build
+    - name: Compile Code Build
       run: dotnet build --no-restore --configuration Release

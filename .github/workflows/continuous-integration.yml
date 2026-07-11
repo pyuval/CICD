@@ -28,3 +28,12 @@ jobs:
       # NEW: Add the automated testing step
       - name: Run Automated Unit Tests
         run: dotnet test --no-build --configuration Release
+      - name: Run Automated Unit Tests
+        run: dotnet test --no-build --configuration Release
+
+      # NEW: Continuous Delivery step to save the compiled application
+      - name: Publish and Save Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-ready-binary
+          path: SrcApp/bin/Release/net8.0/

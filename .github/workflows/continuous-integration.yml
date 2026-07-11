@@ -1,28 +1,30 @@
-cat << 'EOF' > .github/workflows/continuous-integration.yml
 name: Local-to-Cloud CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   compile-and-test:
     runs-on: windows-latest
 
     steps:
-    - name: Check out source code
-      uses: actions/checkout@v4
+      - name: Check out source code
+        uses: actions/checkout@v4
 
-    - name: Set up .NET Runtime Environment
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
+      - name: Set up .NET Runtime Environment
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
 
-    - name: Restore Package Dependencies
-      run: dotnet restore
+      - name: Restore Package Dependencies
+        run: dotnet restore
 
-    - name: Compile Code Build
-      run: dotnet build --no-restore --configuration Release
-EOF
+      - name: Compile Code Build
+        run: dotnet build --no-restore --configuration Release
+
+      # NEW: Add the automated testing step
+      - name: Run Automated Unit Tests
+        run: dotnet test --no-build --configuration Release

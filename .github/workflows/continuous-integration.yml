@@ -1,4 +1,4 @@
- name: Local-to-Cloud CI
+name: Local-to-Cloud CI
 
 on:
   push:
